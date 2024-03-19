@@ -19,19 +19,19 @@ void gotoxy(){
 }
 
 // Fijar el aspecto del cursor, debe admitir tres valores: INVISIBLE, NORMAL Y GRUESO
-void setcursortype(int type_cursor){
+void setcursortype(char type_cursor){
 	union REGS inregs, outregs;
 	inregs.h.ah = 0x01;
 	switch(type_cursor){
-		case 0: //invisible
+		case '0': //invisible
 			inregs.h.ch = 010;
 			inregs.h.cl = 000;
 			break;
-		case 1: //normal
+		case '1': //normal
 			inregs.h.ch = 010;
 			inregs.h.cl = 010;
 			break;
-		case 2: //grueso
+		case '2': //grueso
 			inregs.h.ch = 000;
 			inregs.h.cl = 010;
 			break;
@@ -56,20 +56,18 @@ int getvideomode(){
 	return outregs.h.al;
 }
 
-
-unsigned char cfondo;
 unsigned char ctexto;
+unsigned char cfondo;
 
 // Modifica el color de primer plano con se mostrarán los caracteres
-void textcolor(){
-	ctexto = 11;
+void textcolor(char color){
+	ctexto = color;
 }
 
 // Modifica el color de fondo con que se mostrarán los caracteres
-void textbackgroundcolor(){
-	cfondo = 5;
+void textbackgroundcolor(char color){
+	cfondo = color;
 }
-
 
 // Borra toda la pantalla
 void clrscr(){
@@ -80,7 +78,7 @@ void clrscr(){
 void cputchar(char c){
 	union REGS inregs, outregs;
 	inregs.h.ah = 0x09;
-	inregs.h.al = c;    
+	inregs.h.al = c;    //una funcion más general debe recibir el caracter a imprimir
 	inregs.h.bl = cfondo << 4 | ctexto;
 	inregs.h.bh = 0x00;
 	inregs.x.cx = 1;
@@ -89,7 +87,7 @@ void cputchar(char c){
 }
 
 // Obtiene un carácter de teclado y lo muestra en pantalla
-int getche(){
+char getche(){
 	union REGS inregs, outregs;
 
 	inregs.h.ah = 1;
@@ -100,15 +98,29 @@ int getche(){
 
 int main(){
 
-	char tmp;
+	unsigned char tmp;
+
+	clrscr();
+	
+	printf("\nAspecto del cursor INVISIBLE(0), NORMAL(1), GRUESO(2): ");
+	tmp=getche();
+	setcursortype(tmp);
+
+	printf("\nSelecciona el color de fuente...");
+	tmp=getche();
+	textcolor(tmp);
+	
+	printf("\nSelecciona el color de fondo...");
+	tmp=getche();
+	textbackgroundcolor(tmp);
 
 	printf("\nPulsa una tecla...");
-	tmp = getche();
+	tmp=getche();
+
 	printf("\nHas pulsado: ");
 	cputchar(tmp);
 
 	mi_pausa();
 	
-
 	return 0;
 }
