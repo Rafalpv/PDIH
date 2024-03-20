@@ -86,12 +86,12 @@ int getvideomode(){
 > Modifica el color de primer plano o el color de fondo con que se mostrarán los caracteres
 ```c
 void textcolor(char color){
-	ctexto = color;
+	FG_COLOR = color;
 }
 
 // Modifica el color de fondo con que se mostrarán los caracteres
 void textbackgroundcolor(char color){
-	cfondo = color;
+	BG_COLOR = color;
 }
 ```
 ---
