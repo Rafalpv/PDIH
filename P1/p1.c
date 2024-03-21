@@ -13,6 +13,13 @@ void mi_pausa()
 	int86(0x21, &inregs, &outregs);
 }
 
+void mi_exit()
+{
+	union REGS inregs, outregs;
+	inregs.x.ax = 0x4C00;
+	int86(0x21, &inregs, &outregs);
+}
+
 /**
  * @brief  Mueve el cursor a una posicion determinada
  *
@@ -225,6 +232,76 @@ void pixel_art()
 
 int main()
 {
-	
+	int opcion;
+
+	do
+	{
+		clrscr();
+		printf("\nOpciones: ");
+		printf("\n\t 1 - gotoxy");
+		printf("\n\t 2 - setcursortype");
+		printf("\n\t 3 - setvidemode()");
+		printf("\n\t 4 - getvidemode()");
+		printf("\n\t 5 - textcolor");
+		printf("\n\t 6 - textbackgroundcolor");
+		printf("\n\t 7 - clrscr");
+		printf("\n\t 8 - cputchar");
+		printf("\n\t 9 - getche");
+		printf("\n\t 10 - rectangulo");
+		printf("\n\t 11 - pixer_art");
+		printf("\n\t 12 - salir\n");
+		printf("\n\t Introduzca una opcion: ");
+		scanf("%d", &opcion);
+
+		clrscr();
+
+		switch (opcion)
+		{
+		case 1:
+			gotoxy(15, 15);
+			printf("Cursor movido a la posicion (15,15)\n");
+			mi_pausa();
+			break;
+		case 2:
+			printf("\nCursor invisible: ");
+			setcursortype('0');
+			mi_pausa();
+
+			printf("\nCursor grueso: ");
+			setcursortype('2');
+			mi_pausa();
+
+			printf("\nCursor normal: ");
+			setcursortype('1');
+			mi_pausa();
+			break;
+		case 3:
+			break;
+		case 4:
+			printf("Modo  <%u>, texto\n", getvideomode());
+			mi_pausa();
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			break;
+		case 8:
+			break;
+		case 9:
+			break;
+		case 10:
+			break;
+		case 11:
+			pixel_art();
+			mi_pausa();
+			break;
+		case 12:
+			mi_exit();
+			break;
+		}
+	} while (1);
+
 	return 0;
 }
