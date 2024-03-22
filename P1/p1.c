@@ -5,6 +5,7 @@
 
 BYTE FG_COLOR = 2;
 BYTE BG_COLOR = 0;
+BYTE MODO_VIDEO = 2;
 
 void mi_pausa()
 {
@@ -79,7 +80,7 @@ void setcursortype(char type_cursor)
  * @param modo Es un caracter que indica el modo que se desea. Dicho caracter se debe traducir al decimal adecuado
  */
 
-void setvideomode(unsigned char modo)
+void setvideomode(BYTE modo)
 {
 	union REGS inregs, outregs;
 	inregs.h.ah = 0x00;
@@ -105,7 +106,7 @@ int getvideomode()
  * @param color Determina el color del texto
  */
 
-void textcolor(int color)
+void textcolor(BYTE color)
 {
 	FG_COLOR = color;
 }
@@ -118,7 +119,7 @@ void textcolor(int color)
  * @param color Determina el color del fondo
  */
 
-void textbackgroundcolor(int color)
+void textbackgroundcolor(BYTE color)
 {
 	BG_COLOR = color;
 }
@@ -173,7 +174,7 @@ char getche()
 	return outregs.h.al;
 }
 
-void rectangulo(int x1, int y1, int x2, int y2, int foreground, int background)
+void rectangulo(int x1, int y1, int x2, int y2, int fg_color, int bg_color)
 {
 	union REGS inregs, outregs;
 
@@ -184,8 +185,8 @@ void rectangulo(int x1, int y1, int x2, int y2, int foreground, int background)
 	inregs.h.ch = x1;
 	inregs.h.cl = y1;
 
-	textcolor(foreground);
-	textbackground(background);
+	textcolor(fg_color);
+	textbackgroundcolor(bg_color);
 	inregs.h.bh = (BG_COLOR << 4) | FG_COLOR;
 
 	inregs.h.dh = x2;
@@ -232,7 +233,7 @@ void pixel_art()
 
 int main()
 {
-	int opcion;
+	int opcion, i;
 
 	do
 	{
@@ -240,8 +241,8 @@ int main()
 		printf("\nOpciones: ");
 		printf("\n\t 1 - gotoxy");
 		printf("\n\t 2 - setcursortype");
-		printf("\n\t 3 - setvidemode()");
-		printf("\n\t 4 - getvidemode()");
+		printf("\n\t 3 - setvideomode");
+		printf("\n\t 4 - getvideomode");
 		printf("\n\t 5 - textcolor");
 		printf("\n\t 6 - textbackgroundcolor");
 		printf("\n\t 7 - clrscr");
@@ -276,26 +277,84 @@ int main()
 			mi_pausa();
 			break;
 		case 3:
+			setvideomode(0);
+			printf("\nResolucion 40x25 - Tipo Texto");
+			mi_pausa();
+
+			setvideomode(2);
+			printf("\nResolucion 80x25 - Tipo Texto");
+			mi_pausa();
+
+			setvideomode(4);
+			printf("\nResolucion 320x200 - Tipo Grafico");
+			mi_pausa();
+			setvideomode(2);
+
 			break;
 		case 4:
 			printf("Modo  <%u>, texto\n", getvideomode());
 			mi_pausa();
 			break;
 		case 5:
+			printf("\nDefinir el color del texto:");
+			printf("\n\t(0)Negro, (1)Azul, (2)Verde, (3)Cyan, (4)Rojo, (5)Magenta\n");
+			scanf("%d", &FG_COLOR);
+			textcolor(FG_COLOR);
+			cputchar('X', 5);
+			mi_pausa();
 			break;
 		case 6:
+			printf("\nDefinir el color del fondo:");
+			printf("\n\t(0)Negro, (1)Azul, (2)Verde, (3)Cyan, (4)Rojo, (5)Magenta\n");
+			scanf("%d", &BG_COLOR);
+			textbackgroundcolor(BG_COLOR);
+			cputchar('X', 5);
+			mi_pausa();
 			break;
 		case 7:
+			for (i = 0; i < 30; i++){
+				printf("\nQue Sucio!!! Pulse cualquier tecla para limpiar la pantalla");
+			}
+			mi_pausa();
+			clrscr();
+			mi_pausa();
 			break;
 		case 8:
+			gotoxy(15,1);
+			cputchar('P',1);
+			gotoxy(15,2);
+			cputchar('D',2);
+			gotoxy(15,3);
+			cputchar('I',1);
+			gotoxy(15,4);
+			cputchar('H',1);
+			gotoxy(15,6);
+			cputchar('M',1);
+			gotoxy(15,7);
+			cputchar('O',1);
+			gotoxy(15,8);
+			cputchar('L',1);
+			gotoxy(15,9);
+			cputchar('A',1);
+			mi_pausa();
 			break;
 		case 9:
+			printf("Introduce un caracter: ");
+			printf("\nEl caracter es: %c", getche());
+			mi_pausa();
 			break;
 		case 10:
+			gotoxy(0, 0);
+			rectangulo(4, 9, 18, 75, 3, 5);
+			mi_pausa();
+			rectangulo(8, 2, 15, 75, 0, 1);
+			mi_pausa();
 			break;
 		case 11:
+			setvideomode(4);
 			pixel_art();
 			mi_pausa();
+			setvideomode(2);
 			break;
 		case 12:
 			mi_exit();
