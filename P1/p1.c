@@ -259,8 +259,8 @@ int main()
 		switch (opcion)
 		{
 		case 1:
-			gotoxy(15, 15);
-			printf("Cursor movido a la posicion (15,15)\n");
+			gotoxy(6,17);
+			printf("Cursor movido a la posicion (6,17)\n");
 			mi_pausa();
 			break;
 		case 2:
@@ -288,8 +288,8 @@ int main()
 			setvideomode(4);
 			printf("\nResolucion 320x200 - Tipo Grafico");
 			mi_pausa();
-			setvideomode(2);
 
+			setvideomode(2);
 			break;
 		case 4:
 			printf("Modo  <%u>, texto\n", getvideomode());
@@ -347,7 +347,7 @@ int main()
 			gotoxy(0, 0);
 			rectangulo(4, 9, 18, 75, 3, 5);
 			mi_pausa();
-			rectangulo(8, 2, 15, 75, 0, 1);
+			rectangulo(8, 2, 15, 75, 2, 1);
 			mi_pausa();
 			break;
 		case 11:
