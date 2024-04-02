@@ -89,7 +89,10 @@ void setvideomode(BYTE modo)
 	return;
 }
 
-// Obtiene el modo de video actual
+/**
+ * @brief Devuelve el modo de video 
+ */
+
 int getvideomode()
 {
 	union REGS inregs, outregs;
@@ -259,8 +262,8 @@ int main()
 		switch (opcion)
 		{
 		case 1:
-			gotoxy(6,17);
 			printf("Cursor movido a la posicion (6,17)\n");
+			gotoxy(6,17);
 			mi_pausa();
 			break;
 		case 2:
@@ -344,7 +347,6 @@ int main()
 			mi_pausa();
 			break;
 		case 10:
-			gotoxy(0, 0);
 			rectangulo(4, 9, 18, 75, 3, 5);
 			mi_pausa();
 			rectangulo(8, 2, 15, 75, 2, 1);
