@@ -1,43 +1,27 @@
 # Práctica 1: Entrada/Salida a Bajo Nivel 
 
+Cuando ejecutemos el programa, lo primero que veremos será un menú que lista todas las funciones disponibles. Seleccionaremos el número correspondiente a la función que queremos ejecutar y se mostrará un ejemplo de su ejecución.
+
+![Captura desde 2024-04-02 14-35-25](https://github.com/Rafalpv/PDIH/assets/116666555/eea74684-38a2-41e6-860d-435f1f3c11eb)
+
+
 ## Funciones Principales
 
 >  Coloca el cursor en una posición determinada
 
 ```c
-void gotoxy(){
+void gotoxy(int x, int y){
 	union REGS inregs, outregs;
 	inregs.h.ah = 0x02;
 	inregs.h.bh = 0x00;
-	inregs.h.dh = 20;
-	inregs.h.dl = 3;
+	inregs.h.dh = x;
+	inregs.h.dl = y;
 	int86(0x10,&inregs,&outregs);
 	return;
 }
 ```
----
-> Fijar el aspecto del cursor, debe admitir tres valores: INVISIBLE, NORMAL Y GRUESO
-```c
-void  setcursortype(char  type_cursor){
-	union  REGS  inregs, outregs;
-	inregs.h.ah  =  0x01;
-	switch(type_cursor){
-		case  '0': //invisible
-			inregs.h.ch  =  010;
-			inregs.h.cl  =  000;
-			break;
-		case  '1': //normal
-			inregs.h.ch  =  010;
-			inregs.h.cl  =  010;
-			break;
-		case  '2': //grueso
-			inregs.h.ch  =  000;
-			inregs.h.cl  =  010;
-			break;
-	}
-int86(0x10, &inregs, &outregs);
-}
-```
+![Captura desde 2024-04-02 14-56-59](https://github.com/Rafalpv/PDIH/assets/116666555/6bf69d5b-5285-4573-8db5-26e5568b3e3e)
+
 ---
 > Fijar el aspecto del cursor, debe admitir tres valores: INVISIBLE, NORMAL Y GRUESO
 ```c
@@ -88,12 +72,17 @@ int getvideomode(){
 void textcolor(char color){
 	FG_COLOR = color;
 }
+```
+![Captura desde 2024-04-02 14-45-42](https://github.com/Rafalpv/PDIH/assets/116666555/b7c6ea8a-0b21-439d-a8b0-243ee80c6b85)
 
-// Modifica el color de fondo con que se mostrarán los caracteres
+> Modifica el color de fondo con que se mostrarán los caracteres
+```c
 void textbackgroundcolor(char color){
 	BG_COLOR = color;
 }
 ```
+![Captura desde 2024-04-02 14-46-18](https://github.com/Rafalpv/PDIH/assets/116666555/135993d0-02d4-47cb-a6cf-321738fa4c14)
+
 ---
 > Borra toda la pantalla
 ```c
@@ -102,6 +91,7 @@ void clrscr()
 	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 }
 ```
+Otra implementación alternativa de esta función es
 ```c
 void clrscr(void) {
     union REGS inregs, outregs;
@@ -127,7 +117,7 @@ void clrscr(void) {
 void cputchar(char c){
 	union REGS inregs, outregs;
 	inregs.h.ah = 0x09;
-	inregs.h.al = c;    //una funcion más general debe recibir el caracter a imprimir
+	inregs.h.al = c; 
 	inregs.h.bl = cfondo << 4 | ctexto;
 	inregs.h.bh = 0x00;
 	inregs.x.cx = 1;
@@ -135,6 +125,9 @@ void cputchar(char c){
 	return;
 }
 ```
+![Captura desde 2024-04-02 14-45-01](https://github.com/Rafalpv/PDIH/assets/116666555/43549b2f-d744-4195-954c-475b86f234ad)
+
+
 ---
 > Obtiene un carácter de teclado y lo muestra en pantalla
 ```c
@@ -146,7 +139,9 @@ char getche(){
 	return outregs.h.al;
 }
 ```
+![Captura desde 2024-04-02 14-44-04](https://github.com/Rafalpv/PDIH/assets/116666555/460aa3be-0e5e-4b53-817f-81d287e29222)
 
+---
 ## Función Rectangulo
 
 > Implementar una función que permita dibujar un recuadro en la pantalla en modo texto. Recibirá como parámetros las coordenadas superior izquierda e inferior derecha del recuadro, el color de primer plano y
@@ -176,7 +171,6 @@ void rectangulo(int x1, int y1, int x2, int y2, int fg_color, int bg_color)
 ```
 
 ![Captura desde 2024-03-26 12-26-41](https://github.com/Rafalpv/PDIH/assets/116666555/f0496a30-1c53-4c49-996b-4a6c5605d667)
-
 ![Captura desde 2024-03-26 12-33-27](https://github.com/Rafalpv/PDIH/assets/116666555/15b759da-f784-4229-a46b-33d83fd35004)
 
 ---
