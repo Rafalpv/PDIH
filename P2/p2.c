@@ -11,9 +11,11 @@ int main(int argc, char *argv[])
 
     initscr();
     curs_set(FALSE);
+
     start_color();
     noecho();
     init_pair(1, COLOR_WHITE, COLOR_BLUE);
+    init_pair(2, COLOR_BLACK, COLOR_GREEN);
 
     refresh();
 
@@ -27,33 +29,70 @@ int main(int argc, char *argv[])
     mvwprintw(window, 10, 3, "PULSA UNA TECLA PARA INICIAR!!. GANA EL PRIMERO QUE LLEGUE A 5 PUNTOS.");
     wrefresh(window);
     getch();
-    endwin();
 
-    
-    // Juego
+    werase(window);
 
-    initscr();
-    start_color();
-    noecho();
-    init_pair(1, COLOR_WHITE, COLOR_GREEN);
+    //  Comienzo del Juego
 
-    refresh();
+    int xBall = rows / 2 - 1, yBall = cols / 2, jug1 = rows / 2 - 1, jug2 = rows / 2 - 1;
 
-    getmaxyx(stdscr, rows, cols);
-    WINDOW *window2 = newwin(rows, cols, 0, 0);
-    wbkgd(window2, COLOR_PAIR(1));
+    wbkgd(window, COLOR_PAIR(2));
+    nodelay(stdscr, TRUE);
+    keypad(stdscr, TRUE);
+    cbreak();
 
-    mvwprintw(window2, rows/2-2, 0, "|");
-    mvwprintw(window2, rows/2-1, 0, "|");
-    mvwprintw(window2, rows/2, 0, "|");
+    mvwprintw(window, rows / 2 - 2, 1, "|");
+    mvwprintw(window, rows / 2 - 1, 1, "|");
+    mvwprintw(window, rows / 2, 1, "|");
 
-    mvwprintw(window2, rows/2-2, cols-1, "|");
-    mvwprintw(window2, rows/2-1, cols-1, "|");
-    mvwprintw(window2, rows/2, cols-1, "|");
+    mvwprintw(window, rows / 2 - 2, cols - 2, "|");
+    mvwprintw(window, rows / 2 - 1, cols - 2, "|");
+    mvwprintw(window, rows / 2, cols - 2, "|");
 
-    mvwprintw(window2, rows/2-1, cols/2, "O");
+    mvwprintw(window, rows / 2 - 1, cols / 2, "O");
 
-    wrefresh(window2);
-    getch();
+    wrefresh(window);
+
+    while (1)
+    {
+        switch (getch())
+        {
+        case 'w':;
+            if (jug1 - 1 > 0)
+            {
+                mvwprintw(window, jug1 + 1, 1, " ");
+                mvwprintw(window, jug1 - 2, 1, "|");
+                jug1--;
+            }
+            break;
+        case 's':
+            if (jug1 + 2 < rows)
+            {
+                mvwprintw(window, jug1 - 1, 1, " ");
+                mvwprintw(window, jug1 + 2, 1, "|");
+                jug1++;
+            }
+            break;
+        case 'o':
+            if (jug2 - 1 > 0)
+            {
+                mvwprintw(window, jug2 + 1, cols - 2, " ");
+                mvwprintw(window, jug2 - 2, cols - 2, "|");
+                jug2--;
+            }
+
+            break;
+        case 'l':
+            if (jug2 + 2 < rows)
+            {
+                mvwprintw(window, jug2 - 1, cols - 2, " ");
+                mvwprintw(window, jug2 + 2, cols - 2, "|");
+                jug2++;
+            }
+            break;
+        }
+        wrefresh(window);
+    }
+
     endwin();
 }
