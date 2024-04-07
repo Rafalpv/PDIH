@@ -1,6 +1,6 @@
 #include <ncurses.h>
 #include <unistd.h>
-#define DELAY 8000
+#define DELAY 30000
 
 int main(int argc, char *argv[])
 {
@@ -34,7 +34,12 @@ int main(int argc, char *argv[])
 
     //  Comienzo del Juego
 
-    int xBall = rows / 2 - 1, yBall = cols / 2, jug1 = rows / 2 - 1, jug2 = rows / 2 - 1;
+    int xBall = cols / 2,
+        yBall = rows / 2 - 1,
+        jug1 = rows / 2 - 1, 
+        jug2 = rows / 2 - 1;
+    
+    int next_y, next_x;
 
     wbkgd(window, COLOR_PAIR(2));
     nodelay(stdscr, TRUE);
@@ -53,10 +58,11 @@ int main(int argc, char *argv[])
 
     wrefresh(window);
 
+    int direction_x = 1, direction_y = 1, ant_X, ant_Y;
+
     while (1)
     {
-        switch (getch())
-        {
+        switch (getch()){
         case 'w':;
             if (jug1 - 1 > 0)
             {
@@ -91,6 +97,26 @@ int main(int argc, char *argv[])
             }
             break;
         }
+
+        // Movimiento de la pelota
+        mvwprintw(window, ant_Y ,ant_X, " ");
+        mvwprintw(window, yBall, xBall, "O");
+        usleep(DELAY);
+
+        next_x = xBall + direction_x;
+        next_y = yBall + direction_y;
+        ant_X = xBall; ant_Y = yBall;
+
+        if(next_x >= cols || next_x < 0)
+            direction_x *= -1;
+        else
+            xBall += direction_x;
+
+        if(next_y >= rows || next_y < 0)
+            direction_y *= -1;
+        else
+            yBall += direction_y;
+    
         wrefresh(window);
     }
 
