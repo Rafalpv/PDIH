@@ -1,16 +1,16 @@
 #include <ncurses.h>
 #include <unistd.h>
 
-#define DELAY 30000
+#define DELAY 40000
 
 int j1_points = 0, j2_points = 0;
 
-void puntuacion(WINDOW *window, int j_points, int y, int x){
-    
+void puntuacion(WINDOW *window, int j_points, int y, int x)
+{
+
     char points[2];
     sprintf(points, "%d", j_points);
-    mvwprintw(window, y, x,points);
-
+    mvwprintw(window, y, x, points);
 }
 
 int main(int argc, char *argv[])
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 
     while (1)
     {
-        //Movimiento Jugadores
+        // Movimiento Jugadores
         switch (getch())
         {
         case 'w':
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
         }
 
         // Movimiento de la pelota
-        
+
         next_x = xBall + direction_x;
         next_y = yBall + direction_y;
         ant_X = xBall;
@@ -130,36 +130,44 @@ int main(int argc, char *argv[])
         else
             xBall += direction_x;
 
-        if (next_y >= rows || next_y < 0)
-            direction_y *= -1;
-        else
-            yBall += direction_y;
+        // if (next_y >= rows || next_y < 0)
+        //     direction_y *= -1;
+        // else
+        //     yBall += direction_y;
 
-        //Puntuacion
-        if(xBall == -1){
+        // Puntuacion
+        if (xBall == -1)
+        {
             j2_points++;
-            puntuacion(window,j2_points, 3, 80);
-            xBall = cols / 2; yBall = rows / 2 - 1;
-            direction_x*=-1;
-            usleep(5000000);
+            puntuacion(window, j2_points, 3, 80);
+            xBall = cols / 2;
+            yBall = rows / 2 - 1;
+            direction_x *= -1;
+            usleep(1000000);
         }
-        
-        if(xBall == cols){
+
+        if (xBall == cols)
+        {
             j1_points++;
-            puntuacion(window,j1_points, 3, 10);
-            xBall = cols / 2; yBall = rows / 2 - 1;
-            direction_x*=-1;
-            usleep(5000000);
+            puntuacion(window, j1_points, 3, 10);
+            xBall = cols / 2;
+            yBall = rows / 2 - 1;
+            direction_x *= -1;
+            usleep(1000000);
         }
-        
+
         // Colision con los jugadores
 
+        if(xBall == 2 && (yBall >= jug1-1 && yBall <= jug1+1))
+            direction_x *= -1;
+        else if(xBall == cols-3 && (yBall >= jug2-1 && yBall <= jug2+1))
+            direction_x *= -1;
+        
 
         // Pintamos la pelota
         mvwprintw(window, ant_Y, ant_X, " ");
         mvwprintw(window, yBall, xBall, "O");
         usleep(DELAY);
-
 
         wrefresh(window);
     }
