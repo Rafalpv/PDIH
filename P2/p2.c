@@ -8,7 +8,6 @@ int j1_points = 0, j2_points = 0;
 int rows, cols;
 int jug1, jug2;
 
-
 WINDOW *pantallaInicial()
 {
     initscr();
@@ -24,15 +23,15 @@ WINDOW *pantallaInicial()
     WINDOW *window = newwin(rows, cols, 0, 0);
     box(window, '|', '-');
 
-    mvprintw(rows / 2 - rows / 4, 0, "\t           oooooooooo                                        \n"
-                                     "\t           888    888  ooooooo    ooooooo    oooooooo8       \n"
-                                     "\t           888oooo88 888     888 888   888  888    88o       \n"
-                                     "\t           888       888     888 888   888   888oo888o       \n"
-                                     "\t          o888o        88ooo88  o888o o888o 888     888      \n"
-                                     "\t                                             888ooo888     \n\n"
-                                     "\t \t\t JUGADOR 1 your controls are 'w' and 's' \n"
-                                     "\t \t\t JUGADOR 2 your controls are 'o' and 'l' \n"
-                                     "\t \t\t Pulsa cualquiera tecla");
+    mvprintw(rows / 2 - rows / 3, 0, "\t    oooooooooo                                        \n"
+                                     "\t    888    888  ooooooo    ooooooo    oooooooo8       \n"
+                                     "\t    888oooo88 888     888 888   888  888    88o       \n"
+                                     "\t    888       888     888 888   888   888oo888o       \n"
+                                     "\t    o888o        88ooo88  o888o o888o 888     888      \n"
+                                     "\t                                      888ooo888     \n\n"
+                                     "\t \t JUGADOR 1 your controls are 'w' and 's' \n"
+                                     "\t \t JUGADOR 2 your controls are 'o' and 'l' \n"
+                                     "\t \t Pulsa cualquiera tecla");
 
     wrefresh(window);
 
@@ -57,8 +56,8 @@ void estadoInicial(WINDOW *window)
 
     mvwprintw(window, rows / 2 - 1, cols / 2, "o");
 
-    mvwprintw(window, 3, cols/2 - rows/6, "0");
-    mvwprintw(window, 3, cols/2 + rows/6, "0");
+    mvwprintw(window, 3, cols / 2 - rows / 6, "0");
+    mvwprintw(window, 3, cols / 2 + rows / 6, "0");
 
     wrefresh(window);
 }
@@ -70,19 +69,27 @@ void finPartida(WINDOW *window)
 
     box(window, '|', '-');
 
-    mvprintw(rows/2 - rows/4,cols/2, "JUG 1 <-> %d puntos", j1_points);
-    mvprintw(rows/2 - rows/5 ,cols/2,"JUG 2 <-> %d puntos", j2_points);
+    int ganador = j1_points == 2 ? 1 : 2;
 
+    mvprintw(rows / 2 - rows / 3, 0,
+             "\t\t         *******************\n"
+             "\t\t         *                 *\n"
+             "\t\t         *    ¡GANADOR!    *\n"
+             "\t\t         *                 *\n"
+             "\t\t         *    Jugador %d    *\n"
+             "\t\t         *                 *\n"
+             "\t\t         *******************\n",
+             ganador);
 
     wrefresh(window);
 
-    if(getch() == 'e' )
+    if (getch() == 'e')
         end = true;
-    else if(getch() == 'r'){
+    else if (getch() == 'r')
+    {
         j1_points = 0;
         j2_points = 0;
         estadoInicial(window);
-
     }
 }
 int main(int argc, char *argv[])
@@ -108,7 +115,7 @@ int main(int argc, char *argv[])
 
     int direction_x = 1, direction_y = 1, ant_X, ant_Y;
 
-    while(!end)
+    while (!end)
     {
         mvvline(0, cols / 2, ACS_VLINE, cols);
 
@@ -183,18 +190,20 @@ int main(int argc, char *argv[])
         // Puntuacion
         if (xBall == -1 || xBall == cols)
         {
-            if (xBall == -1){
+            if (xBall == -1)
+            {
                 j2_points++;
-                mvwprintw(window, 3, cols/2 - rows/6, "%d", j2_points);
+                mvwprintw(window, 3, cols / 2 - rows / 6, "%d", j2_points);
             }
-            else{
+            else
+            {
                 j1_points++;
-                mvwprintw(window, 3, cols/2 + rows/6, "%d", j1_points);
+                mvwprintw(window, 3, cols / 2 + rows / 6, "%d", j1_points);
             }
             xBall = cols / 2;
             yBall = rows / 2 - 1;
             direction_x *= -1;
-            usleep(10000);
+            usleep(20000);
         }
 
         // Pintamos la pelota
