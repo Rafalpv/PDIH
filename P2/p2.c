@@ -70,9 +70,9 @@ void finPartida(WINDOW *window)
 
     box(window, '|', '-');
 
-    mvprintw(5, 5, "JUGADOR 1 : %d", j1_points);
+    mvprintw(5, 5, "JUGADOR 1 -> %d ", j1_points);
 
-    mvprintw(8, 5, "JUGADOR 2 : %d", j2_points);
+    mvprintw(8, 5, "JUGADOR 2 -> %d", j2_points);
 
     wrefresh(window);
 
@@ -82,7 +82,6 @@ void finPartida(WINDOW *window)
 int main(int argc, char *argv[])
 {
 
-
     WINDOW *window = pantallaInicial();
     keypad(stdscr, true);
 
@@ -90,13 +89,13 @@ int main(int argc, char *argv[])
 
     werase(window);
 
-///////////////////////////////////////////////
+    ///////////////////////////////////////////////
 
     int xBall = cols / 2,
         yBall = rows / 2 - 1,
         jug1 = rows / 2 - 1,
         jug2 = rows / 2 - 1,
-        next_y = -1, 
+        next_y = -1,
         next_x = -1;
 
     estadoInicial(window);
@@ -106,7 +105,6 @@ int main(int argc, char *argv[])
     while (1)
     {
         mvvline(0, cols / 2, ACS_VLINE, cols);
-
 
         // Movimiento Jugadores
         switch (getch())
@@ -160,7 +158,6 @@ int main(int argc, char *argv[])
         else if (xBall == cols - 3 && (yBall >= jug2 - 1 && yBall <= jug2 + 1))
             direction_x *= -1;
 
-
         // Movimiento de la pelota
         next_x = xBall + direction_x;
         next_y = yBall + direction_y;
@@ -178,20 +175,16 @@ int main(int argc, char *argv[])
             yBall += direction_y;
 
         // Puntuacion
-        if (xBall == -1)
+        if (xBall == -1 || xBall == cols)
         {
-            j2_points++;
-            mvwprintw(window, 3, 60, "%d", j2_points);
-            xBall = cols / 2;
-            yBall = rows / 2 - 1;
-            direction_x *= -1;
-            usleep(10000);
-        }
-
-        if (xBall == cols)
-        {
-            j1_points++;
-            mvwprintw(window, 3, 40, "%d", j1_points);
+            if (xBall == -1){
+                j2_points++;
+                mvwprintw(window, 3, 60, "%d", j2_points);
+            }
+            else{
+                j1_points++;
+                mvwprintw(window, 3, 40, "%d", j1_points);
+            }
             xBall = cols / 2;
             yBall = rows / 2 - 1;
             direction_x *= -1;
