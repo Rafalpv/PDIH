@@ -7,6 +7,7 @@ bool end = false;
 int j1_points = 0, j2_points = 0;
 int rows, cols;
 int jug1, jug2;
+int xBall, yBall, next_x, next_y;
 
 WINDOW *pantallaInicial()
 {
@@ -46,18 +47,25 @@ void estadoInicial(WINDOW *window)
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
 
-    mvwprintw(window, rows / 2 - 2, 1, "|");
-    mvwprintw(window, rows / 2 - 1, 1, "|");
-    mvwprintw(window, rows / 2, 1, "|");
+    j1_points = 0;
+    j2_points = 0;
+    xBall = cols / 2,
+    yBall = rows / 2 - 1,
+    jug1 = rows / 2 - 1,
+    jug2 = rows / 2 - 1,
+    next_y = -1,
+    next_x = -1;
 
-    mvwprintw(window, rows / 2 - 2, cols - 2, "|");
-    mvwprintw(window, rows / 2 - 1, cols - 2, "|");
-    mvwprintw(window, rows / 2, cols - 2, "|");
+    for(int i = 0; i < 3; i++){
+        mvwprintw(window, rows / 2 - i, 1, "|");
+        mvwprintw(window, rows / 2 - i, cols - 2, "|")  ;
+    }
 
     mvwprintw(window, rows / 2 - 1, cols / 2, "o");
 
     mvwprintw(window, 3, cols / 2 - rows / 6, "0");
     mvwprintw(window, 3, cols / 2 + rows / 6, "0");
+
 
     wrefresh(window);
 }
@@ -103,13 +111,6 @@ int main(int argc, char *argv[])
     werase(window);
 
     ///////////////////////////////////////////////
-
-    int xBall = cols / 2,
-        yBall = rows / 2 - 1,
-        jug1 = rows / 2 - 1,
-        jug2 = rows / 2 - 1,
-        next_y = -1,
-        next_x = -1;
 
     estadoInicial(window);
 
