@@ -3,8 +3,11 @@
 
 #define DELAY 40000
 
+bool end = false;
 int j1_points = 0, j2_points = 0;
 int rows, cols;
+int jug1, jug2;
+
 
 WINDOW *pantallaInicial()
 {
@@ -38,6 +41,8 @@ WINDOW *pantallaInicial()
 
 void estadoInicial(WINDOW *window)
 {
+    werase(window);
+
     wbkgd(window, COLOR_PAIR(1));
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
@@ -52,15 +57,10 @@ void estadoInicial(WINDOW *window)
 
     mvwprintw(window, rows / 2 - 1, cols / 2, "o");
 
-    mvwprintw(window, 3, 40, "0");
-    mvwprintw(window, 3, 60, "0");
+    mvwprintw(window, 3, cols/2 - rows/6, "0");
+    mvwprintw(window, 3, cols/2 + rows/6, "0");
 
     wrefresh(window);
-}
-
-void puntuacion(WINDOW *window, int j_points, int y, int x)
-{
-    mvwprintw(window, y, x, "%d", j_points);
 }
 
 void finPartida(WINDOW *window)
@@ -70,15 +70,21 @@ void finPartida(WINDOW *window)
 
     box(window, '|', '-');
 
-    mvprintw(5, 5, "JUGADOR 1 -> %d ", j1_points);
+    mvprintw(rows/2 - rows/4,cols/2, "JUG 1 <-> %d puntos", j1_points);
+    mvprintw(rows/2 - rows/5 ,cols/2,"JUG 2 <-> %d puntos", j2_points);
 
-    mvprintw(8, 5, "JUGADOR 2 -> %d", j2_points);
 
     wrefresh(window);
 
-    getch();
-}
+    if(getch() == 'e' )
+        end = true;
+    else if(getch() == 'r'){
+        j1_points = 0;
+        j2_points = 0;
+        estadoInicial(window);
 
+    }
+}
 int main(int argc, char *argv[])
 {
 
@@ -102,7 +108,7 @@ int main(int argc, char *argv[])
 
     int direction_x = 1, direction_y = 1, ant_X, ant_Y;
 
-    while (1)
+    while(!end)
     {
         mvvline(0, cols / 2, ACS_VLINE, cols);
 
@@ -179,11 +185,11 @@ int main(int argc, char *argv[])
         {
             if (xBall == -1){
                 j2_points++;
-                mvwprintw(window, 3, 60, "%d", j2_points);
+                mvwprintw(window, 3, cols/2 - rows/6, "%d", j2_points);
             }
             else{
                 j1_points++;
-                mvwprintw(window, 3, 40, "%d", j1_points);
+                mvwprintw(window, 3, cols/2 + rows/6, "%d", j1_points);
             }
             xBall = cols / 2;
             yBall = rows / 2 - 1;
@@ -196,7 +202,7 @@ int main(int argc, char *argv[])
         mvwprintw(window, yBall, xBall, "o");
         usleep(DELAY);
 
-        if (j1_points == 3 || j2_points == 3)
+        if (j1_points == 2 || j2_points == 2)
             finPartida(window);
 
         wrefresh(window);
