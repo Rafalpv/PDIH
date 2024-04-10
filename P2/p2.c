@@ -192,6 +192,24 @@ int main(int argc, char *argv[])
             yBall += direction_y;
 
   
+        mvwprintw(window, ant_Y, ant_X, " ");
+        mvwprintw(window, yBall, xBall, "o");
+        usleep(DELAY);
+
+
+        puntuacion();
+
+        if (j1_points == PUNTOS || j2_points == PUNTOS)
+            finPartida(window);
+
+        wrefresh(window);
+    }
+
+    endwin();
+}
+
+void puntuacion(){
+
         if (xBall == -1 || xBall == cols)
         {
             if (xBall == -1)
@@ -209,16 +227,4 @@ int main(int argc, char *argv[])
             direction_x *= -1;
             usleep(20000);
         }
-
-        mvwprintw(window, ant_Y, ant_X, " ");
-        mvwprintw(window, yBall, xBall, "o");
-        usleep(DELAY);
-
-        if (j1_points == PUNTOS || j2_points == PUNTOS)
-            finPartida(window);
-
-        wrefresh(window);
-    }
-
-    endwin();
 }
