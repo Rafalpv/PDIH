@@ -5,11 +5,13 @@
 #define PUNTOS 5
 
 bool end = false;
-int j1_points = 0, j2_points = 0;
-int rows, cols;
-int jug1, jug2;
-int xBall, yBall, next_x, next_y;
-int direction_x = 1, direction_y = 1, ant_X, ant_Y;
+int j1_points = 0, j2_points = 0,
+max_Y, max_X,
+jug1, jug2,
+ball_X, ball_Y,
+next_X, next_Y,
+direction_X = 1, direction_Y = 1,
+ant_X, ant_Y;
 
 WINDOW *newWindow()
 {
@@ -20,15 +22,15 @@ WINDOW *newWindow()
     init_pair(1, COLOR_CYAN, COLOR_BLACK);
     refresh();
 
-    getmaxyx(stdscr, rows, cols);
-    WINDOW *window = newwin(rows, cols, 0, 0);
+    getmaxyx(stdscr, max_Y, max_X);
+    WINDOW *window = newwin(max_Y, max_X, 0, 0);
     box(window, '|', '-');
     return window;
 }
 
 void printTitle(WINDOW *window)
 {
-    mvprintw(rows / 2 - rows / 3, 0, "\t    oooooooooo                                        \n"
+    mvprintw(max_Y / 2 - max_Y / 3, 0, "\t    oooooooooo                                        \n"
                                      "\t    888    888  ooooooo    ooooooo    oooooooo8       \n"
                                      "\t    888oooo88 888     888 888   888  888    88o       \n"
                                      "\t    888       888     888 888   888   888oo888o       \n"
@@ -41,19 +43,19 @@ void printTitle(WINDOW *window)
 
 void resetBall(WINDOW *window)
 {
-    xBall = cols / 2,
-    yBall = rows / 2 - 1,
-    mvwprintw(window, rows / 2 - 1, cols / 2, "o");
+    ball_X = max_X / 2,
+    ball_Y = max_Y / 2 - 1,
+    mvwprintw(window, max_Y / 2 - 1, max_X / 2, "o");
 }
 
 void resetPlayers(WINDOW *window)
 {
-    jug1 = rows / 2 - 1,
-    jug2 = rows / 2 - 1;
+    jug1 = max_Y / 2 - 1,
+    jug2 = max_Y / 2 - 1;
     for (int i = 0; i < 3; i++)
     {
-        mvwprintw(window, rows / 2 - i, 1, "|");
-        mvwprintw(window, rows / 2 - i, cols - 2, "|");
+        mvwprintw(window, max_Y / 2 - i, 1, "|");
+        mvwprintw(window, max_Y / 2 - i, max_X - 2, "|");
     }
 }
 
@@ -61,8 +63,8 @@ void resetMarcador(WINDOW *window)
 {
     j1_points = 0,
     j2_points = 0,
-    mvwprintw(window, 3, cols / 2 + rows / 6, "0");
-    mvwprintw(window, 3, cols / 2 - rows / 6, "0");
+    mvwprintw(window, 3, max_X / 2 + max_Y / 6, "0");
+    mvwprintw(window, 3, max_X / 2 - max_Y / 6, "0");
 }
 
 void initializeGame(WINDOW *window)
@@ -82,48 +84,47 @@ void initializeGame(WINDOW *window)
 void puntuacion(WINDOW *window)
 {
 
-    if (xBall == -1 || xBall == cols)
+    if (ball_X == -1 || ball_X == max_X)
     {
-        if (xBall == -1)
+        if (ball_X == -1)
         {
             j2_points++;
-            mvwprintw(window, 3, cols / 2 - rows / 6, "%d", j2_points);
+            mvwprintw(window, 3, max_X / 2 - max_Y / 6, "%d", j2_points);
         }
         else
         {
             j1_points++;
-            mvwprintw(window, 3, cols / 2 + rows / 6, "%d", j1_points);
+            mvwprintw(window, 3, max_X / 2 + max_Y / 6, "%d", j1_points);
         }
-        xBall = cols / 2;
-        yBall = rows / 2 - 1;
-        direction_x *= -1;
+        resetBall(window);
+        direction_X *= -1;
         usleep(20000);
     }
 }
 
 void moveBall(WINDOW *window)
 {
-    next_x = xBall + direction_x;
-    next_y = yBall + direction_y;
+    next_X = ball_X + direction_X;
+    next_Y = ball_Y + direction_Y;
 
-    if (next_x == 1 && (next_y >= jug1 - 1 && next_y <= jug1 + 1) || next_x == cols - 2 && (next_y >= jug2 - 1 && next_y <= jug2 + 1))
-        direction_x *= -1;
+    if (next_X == 1 && (next_Y >= jug1 - 1 && next_Y <= jug1 + 1) || next_X == max_X - 2 && (next_Y >= jug2 - 1 && next_Y <= jug2 + 1))
+        direction_X *= -1;
 
-    ant_X = xBall;
-    ant_Y = yBall;
+    ant_X = ball_X;
+    ant_Y = ball_Y;
 
-    if (next_x > cols || next_x < -1)
-        direction_x *= -1;
+    if (next_X > max_X || next_X < -1)
+        direction_X *= -1;
     else
-        xBall += direction_x;
+        ball_X += direction_X;
 
-    if (next_y >= rows || next_y < 0)
-        direction_y *= -1;
+    if (next_Y >= max_Y || next_Y < 0)
+        direction_Y *= -1;
     else
-        yBall += direction_y;
+        ball_Y += direction_Y;
 
     mvwprintw(window, ant_Y, ant_X, " ");
-    mvwprintw(window, yBall, xBall, "o");
+    mvwprintw(window, ball_Y, ball_X, "o");
     usleep(DELAY);
 }
 
@@ -142,7 +143,7 @@ void movePlayer(WINDOW *window)
         break;
     case 's':
     case 'S':
-        if (jug1 + 2 < rows)
+        if (jug1 + 2 < max_Y)
         {
             mvwprintw(window, jug1 - 1, 1, " ");
             mvwprintw(window, jug1 + 2, 1, "|");
@@ -153,18 +154,18 @@ void movePlayer(WINDOW *window)
     case 'O':
         if (jug2 - 1 > 0)
         {
-            mvwprintw(window, jug2 + 1, cols - 2, " ");
-            mvwprintw(window, jug2 - 2, cols - 2, "|");
+            mvwprintw(window, jug2 + 1, max_X - 2, " ");
+            mvwprintw(window, jug2 - 2, max_X - 2, "|");
             jug2--;
         }
 
         break;
     case 'l':
     case 'L':
-        if (jug2 + 2 < rows)
+        if (jug2 + 2 < max_Y)
         {
-            mvwprintw(window, jug2 - 1, cols - 2, " ");
-            mvwprintw(window, jug2 + 2, cols - 2, "|");
+            mvwprintw(window, jug2 - 1, max_X - 2, " ");
+            mvwprintw(window, jug2 + 2, max_X - 2, "|");
             jug2++;
         }
         break;
@@ -183,7 +184,7 @@ void endGame(WINDOW *window)
 
     int ganador = j1_points == PUNTOS ? 1 : 2;
 
-    mvprintw(rows / 2 - rows / 3, 0,
+    mvprintw(max_Y / 2 - max_Y / 3, 0,
              "\t\t         *******************\n"
              "\t\t         *                 *\n"
              "\t\t         *    ¡GANADOR!    *\n"
@@ -219,7 +220,7 @@ int main(int argc, char *argv[])
 
     while (!end)
     {
-        mvvline(0, cols / 2, ACS_VLINE, cols);
+        mvvline(0, max_X / 2, ACS_VLINE, max_X);
         movePlayer(window);
         moveBall(window);
         puntuacion(window);
