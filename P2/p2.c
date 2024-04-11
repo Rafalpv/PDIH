@@ -6,12 +6,12 @@
 
 bool end = false;
 int j1_points = 0, j2_points = 0,
-max_Y, max_X,
-jug1, jug2,
-ball_X, ball_Y,
-next_X, next_Y,
-direction_X = 1, direction_Y = 1,
-ant_X, ant_Y;
+    max_Y, max_X,
+    jug1, jug2,
+    ball_X, ball_Y,
+    next_X, next_Y,
+    direction_X = 1, direction_Y = 1,
+    ant_X, ant_Y;
 
 WINDOW *newWindow()
 {
@@ -31,14 +31,14 @@ WINDOW *newWindow()
 void printTitle(WINDOW *window)
 {
     mvprintw(max_Y / 2 - max_Y / 3, 0, "\t    oooooooooo                                        \n"
-                                     "\t    888    888  ooooooo    ooooooo    oooooooo8       \n"
-                                     "\t    888oooo88 888     888 888   888  888    88o       \n"
-                                     "\t    888       888     888 888   888   888oo888o       \n"
-                                     "\t    o888o        88ooo88  o888o o888o 888     888      \n"
-                                     "\t                                      888ooo888     \n\n"
-                                     "\t \t JUGADOR 1 your controls are 'w' and 's' \n"
-                                     "\t \t JUGADOR 2 your controls are 'o' and 'l' \n"
-                                     "\t \t Pulsa cualquiera tecla");
+                                       "\t    888    888  ooooooo    ooooooo    oooooooo8       \n"
+                                       "\t    888oooo88 888     888 888   888  888    88o       \n"
+                                       "\t    888       888     888 888   888   888oo888o       \n"
+                                       "\t    o888o        88ooo88  o888o o888o 888     888      \n"
+                                       "\t                                      888ooo888     \n\n"
+                                       "\t \t JUGADOR 1 your controls are 'w' and 's' \n"
+                                       "\t \t JUGADOR 2 your controls are 'o' and 'l' \n"
+                                       "\t \t Pulsa cualquiera tecla");
 }
 
 void resetBall(WINDOW *window)
@@ -63,8 +63,8 @@ void resetMarcador(WINDOW *window)
 {
     j1_points = 0,
     j2_points = 0,
-    mvwprintw(window, 3, max_X / 2 + max_Y / 6, "0");
-    mvwprintw(window, 3, max_X / 2 - max_Y / 6, "0");
+    mvwprintw(window, 3, max_X / 2 + max_Y / 10, "0");
+    mvwprintw(window, 3, max_X / 2 - max_Y / 10, "0");
 }
 
 void initializeGame(WINDOW *window)
@@ -83,23 +83,14 @@ void initializeGame(WINDOW *window)
 
 void puntuacion(WINDOW *window)
 {
+    if (ball_X == -1)
+        j2_points++;
+    else
+        j1_points++;
 
-    if (ball_X == -1 || ball_X == max_X)
-    {
-        if (ball_X == -1)
-        {
-            j2_points++;
-            mvwprintw(window, 3, max_X / 2 - max_Y / 6, "%d", j2_points);
-        }
-        else
-        {
-            j1_points++;
-            mvwprintw(window, 3, max_X / 2 + max_Y / 6, "%d", j1_points);
-        }
-        resetBall(window);
-        direction_X *= -1;
-        usleep(20000);
-    }
+    resetBall(window);
+    direction_X *= -1;
+    usleep(20000);
 }
 
 void moveBall(WINDOW *window)
@@ -221,9 +212,13 @@ int main(int argc, char *argv[])
     while (!end)
     {
         mvvline(0, max_X / 2, ACS_VLINE, max_X);
+        mvwprintw(window, 3, max_X / 2 - max_Y / 10, "%d", j2_points);
+        mvwprintw(window, 3, max_X / 2 + max_Y / 10, "%d", j1_points);
         movePlayer(window);
         moveBall(window);
-        puntuacion(window);
+
+        if (ball_X == -1 || ball_X == max_X)
+            puntuacion(window);
 
         if (j1_points == PUNTOS || j2_points == PUNTOS)
             endGame(window);
