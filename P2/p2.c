@@ -19,7 +19,7 @@ WINDOW *newWindow()
     curs_set(FALSE);
     start_color();
     noecho();
-    init_pair(1, COLOR_CYAN, COLOR_BLACK);
+    init_pair(1, COLOR_YELLOW, COLOR_BLACK);
     refresh();
 
     getmaxyx(stdscr, max_Y, max_X);
@@ -30,15 +30,16 @@ WINDOW *newWindow()
 
 void printTitle(WINDOW *window)
 {
-    mvprintw(max_Y / 2 - max_Y / 3, 0, "\t    oooooooooo                                        \n"
-                                       "\t    888    888  ooooooo    ooooooo    oooooooo8       \n"
-                                       "\t    888oooo88 888     888 888   888  888    88o       \n"
-                                       "\t    888       888     888 888   888   888oo888o       \n"
-                                       "\t    o888o        88ooo88  o888o o888o 888     888      \n"
-                                       "\t                                      888ooo888     \n\n"
-                                       "\t \t JUGADOR 1 your controls are 'w' and 's' \n"
-                                       "\t \t JUGADOR 2 your controls are 'o' and 'l' \n"
-                                       "\t \t Pulsa cualquiera tecla");
+    mvprintw(max_Y / 2 - max_Y / 3, 0, "\t\t oooooooooo                                        \n"
+                                       "\t\t 888    888  ooooooo    ooooooo    oooooooo8       \n"
+                                       "\t\t 888oooo88 888     888 888   888  888    88o       \n"
+                                       "\t\t 888       888     888 888   888   888oo888o       \n"
+                                       "\t\t o888o        88ooo88  o888o o888o 888     888      \n"
+                                       "\t\t                                   888ooo888     \n\n"
+                                       "\t\t -> JUGADOR 1 (izquierda) tus controles son 'w/W' y 's/S' \n"
+                                       "\t\t -> JUGADOR 2 (derecha) tus controles son 'o/O' y 'l/L' \n\n"
+                                       "\t\t  EL JUGADOR QUE ANOTE 5 PUNTOS GANA LA PARTIDA. SUERTE!\n\n"
+                                       "\t\t  PULSA CUALQUIER TECLA PARA COMENZAR");
 }
 
 void resetBall(WINDOW *window)
@@ -176,13 +177,18 @@ void endGame(WINDOW *window)
     int ganador = j1_points == PUNTOS ? 1 : 2;
 
     mvprintw(max_Y / 2 - max_Y / 3, 0,
-             "\t\t         *******************\n"
-             "\t\t         *                 *\n"
-             "\t\t         *    ¡GANADOR!    *\n"
-             "\t\t         *                 *\n"
-             "\t\t         *    Jugador %d    *\n"
-             "\t\t         *                 *\n"
-             "\t\t         *******************\n",
+             "\t\t\t *******************\n"
+             "\t\t\t *                 *\n"
+             "\t\t\t *    ¡GANADOR!    *\n"
+             "\t\t\t *                 *\n"
+             "\t\t\t *    Jugador %d    *\n"
+             "\t\t\t *                 *\n"
+             "\t\t\t *  ¡ENHORABUENA!  *\n"
+             "\t\t\t *                 *\n"
+             "\t\t\t *******************\n"
+             "\n\n"
+             "\t\t\t -> Pulse la Tecla 'R' para Reiniciar\n"  
+             "\t\t\t -> Pulse la Tecla 'E' para Salir",
              ganador);
 
     wrefresh(window);
