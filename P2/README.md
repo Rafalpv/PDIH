@@ -1,9 +1,14 @@
 # Práctica 2: Uso de bibliotecas de programación de interfaces de usuario en modo texto
 
-![Diseño sin título](https://github.com/Rafalpv/PDIH/assets/116666555/277d01fa-379d-4827-9b19-215b901b2045)
+https://github.com/Rafalpv/PDIH/assets/116666555/31fceb29-5c35-43bb-82d0-706ea2332caa
 
 ### Introducción
 Este programa implementa el juego Pong utilizando la biblioteca ncurses en C. El juego consiste en dos jugadores que controlan raquetas en cada extremo de la pantalla para golpear una pelota y evitar que atraviese su lado. El juego termina cuando un jugador consigue anotar 5 puntos.
+
+Para compilar el programa 
+```
+gcc p2.c -o pong -lncurses
+```
 
 ### Librerías Utilizadas
 El programa utiliza las siguientes librerías:
@@ -71,7 +76,8 @@ El programa utiliza las siguientes librerías:
 
 ---
 #### Ventana de Bienvenida
-![Captura desde 2024-04-12 19-52-41](https://github.com/Rafalpv/PDIH/assets/116666555/a7063cfd-746b-4565-b81d-d16cfc77f300)
+![Captura desde 2024-04-15 12-30-33](https://github.com/Rafalpv/PDIH/assets/116666555/17a4cccc-9c52-4b7b-8ce7-1074ec342561)
+
 
 #### Ventana Final 
 ![Captura desde 2024-04-12 19-53-28](https://github.com/Rafalpv/PDIH/assets/116666555/a54e963e-93ed-445f-9ec5-d6fbd69ac4f4)
