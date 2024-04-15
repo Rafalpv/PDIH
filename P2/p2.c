@@ -37,7 +37,8 @@ void printTitle(WINDOW *window)
                                        "\t\t o888o        88ooo88  o888o o888o 888     888      \n"
                                        "\t\t                                   888ooo888     \n\n"
                                        "\t\t -> JUGADOR 1 (izquierda) tus controles son 'w/W' y 's/S' \n"
-                                       "\t\t -> JUGADOR 2 (derecha) tus controles son 'o/O' y 'l/L' \n\n"
+                                       "\t\t -> JUGADOR 2 (derecha) tus controles son 'o/O' y 'l/L' \n"
+                                       "\t\t -> p/P' para poner en pausa \n\n"
                                        "\t\t  EL JUGADOR QUE ANOTE 5 PUNTOS GANA LA PARTIDA. SUERTE!\n\n"
                                        "\t\t  PULSA CUALQUIER TECLA PARA COMENZAR");
 }
