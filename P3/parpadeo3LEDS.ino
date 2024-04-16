@@ -1,3 +1,6 @@
+int pins[] = {11, 12, 13};
+int numPins = 3;
+
 void setup()
 {
   pinMode(11, OUTPUT);
@@ -8,20 +11,10 @@ void setup()
 
 void loop()
 {
-  
-  if()
-  
-  digitalWrite(11, HIGH);
-  digitalWrite(12, LOW);
-  digitalWrite(13, LOW);
-  delay(1500); 
-  digitalWrite(11, LOW);
-  digitalWrite(12, HIGH);
-  digitalWrite(13, LOW);
-  delay(1500); 
-  digitalWrite(11, LOW);
-  digitalWrite(12, LOW);
-  digitalWrite(13, HIGH);
-  delay(1500); 
-  
+  for (int i = 0; i < numPins; i++) {
+    for (int j = 0; j < numPins; j++) {
+      digitalWrite(pins[j], (i == j) ? HIGH : LOW);
+    }
+    delay(1000);
+  }  
 }
