@@ -15,6 +15,6 @@ void loop()
     for (int j = 0; j < numPins; j++) {
       digitalWrite(pins[j], (i == j) ? HIGH : LOW);
     }
-    delay(1000);
+    delay(1500);
   }  
 }
