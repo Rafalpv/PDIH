@@ -7,4 +7,3 @@ Prácticas de la asignatura de Periféricos y Dispositivos de Interfaz Humana, I
 - ### Práctica 2: [Uso de bibliotecas de programación de interfaces de usuario en modo texto](P2/)
 - ### Práctica 3: [Experimentación con Arduino](P3/)
 - ### OCR Android: [Demo de OCR en Android](OCR-Android/)
-- )
