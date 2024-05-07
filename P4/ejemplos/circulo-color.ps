@@ -1,0 +1,22 @@
+%!PS
+
+newpath
+1 0 0 setrgbcolor
+0.1 setlinewidth
+% x  y   R  angI angF
+ 40 70  30   0   360   arc
+closepath
+stroke
+
+
+/Times-Roman findfont   % seleccionar el tipo de fuente
+20 scalefont            % seleccionar el tamaño de fuente (20 puntos)
+setfont                 % establecer este tipo de letra como el actual
+
+newpath                 % comenzar un nuevo elemento de página
+0 0 1 setrgbcolor       % poner el color a azul
+20 72 moveto            % colocar el curso en el punto (20, 72)
+(hola) show             % escribir el texto "hola mundo"
+stroke
+
+showpage

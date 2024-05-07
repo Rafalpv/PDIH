@@ -1,0 +1,13 @@
+%!
+% ejemplo de mostrar texto
+
+/Legend findfont	% seleccionar el tipo de fuente
+20 scalefont			% seleccionar el tamaño de fuente (20 puntos)
+setfont					% establecer este tipo de letra como el actual
+
+newpath					% comenzar un nuevo elemento de página
+72 72 moveto			% colocar el curso en el punto (72, 72)
+(hola mundo) show    	% escribir el texto "hola mundo"
+stroke
+
+showpage

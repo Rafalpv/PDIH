@@ -1,0 +1,18 @@
+%!
+%% Draws a square box at (x,y)=(10,200) from bottom-left
+
+newpath			% Start a new path
+
+10 200 moveto
+90  0 rlineto
+0 90 rlineto
+-90  0 rlineto
+
+closepath
+
+5 setlinewidth
+
+stroke
+
+showpage		% We're done... eject the page
+
