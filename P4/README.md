@@ -11,7 +11,7 @@ Establece el color de las líneas usando el modelo de color RGB con los valores 
 0.3 0.3 0.3 setrgbcolor
 ```
 
-Para realizar los rectangulos hemos seguido este patron de código:
+Para realizar los rectangulos he seguido este patron de código:
 
 ```postscript
 newpath
@@ -22,8 +22,7 @@ closepath
 stroke
 ```
 
-Para realizar los circulos hemos seguido este patron de código:
-
+Para realizar los circulos he seguido este patron de código:
 ```postscript
 newpath
 % x  y   R  angI angF
@@ -45,7 +44,7 @@ Para cambiar la fuente de letra y el tamaño utilizamos la siguiente orden:
 /Legend findfont 15 scalefont setfont
 ```
 
-Para añadir el texto principal, hemos utilizado este patrón de código:
+Para añadir el texto principal, he utilizado este patrón de código:
 
 ```postscript
 newpath
@@ -63,8 +62,7 @@ newpath
 (de Interfaz Humana por la UGR) show
 stroke
 ```
-
-Para añadir el círculo relleno de color gris:
+Para añadir rellenar las figuras de colores he seguido el siguiente patrón de código:
 - `fill`: Rellena la figura con el color establecido.
 ```postscript
 0.7 0.7 0.7 setrgbcolor
@@ -75,16 +73,56 @@ closepath
 fill
 stroke
 ```
+Para dibujar las líneas doradas:
+```postscript
+newpath
+/Legend findfont 15 scalefont setfont
+0.93 0.72 0.06 setrgbcolor
+130 130 moveto
+230 0 rlineto
+470 130 moveto
+230 0 rlineto
+stroke 
+```
+
 ![Captura desde 2024-05-19 21-09-31](https://github.com/Rafalpv/PDIH/assets/116666555/fcf355ae-802b-4cee-bb5d-ab6a1a3952cd)
 
 ## Corazón
 
-Para la configuración de esta imágen hemos utilizado el siguiente trozo de codigo, donde ajustamos el tamaño de la página, el grosor de las líneas y la fuente:
+Para la configuración de esta imágen he utilizado el siguiente trozo de codigo, donde ajustamos el tamaño de la página, el grosor de las líneas y la fuente:
 ```postscript
 << /PageSize [842 595] >> setpagedevice
 2 setlinewidth
 /Times-Roman findfont 18 scalefont setfont
 ```
+Para dibujar el corazón, por una parte dibujamos un cuadrado invertido y por otro lado dos esferas (todas las figuras rellenas de color rojo). Para ello se utiliza este trozo de código:
+```postscript
+newpath
+1 0 0 setrgbcolor
+220 170 moveto
+118 115 rlineto
+-120  70 rlineto
+-117 -69 rlineto
+fill
+closepath
+
+stroke
+
+newpath
+% x  y   R  angI angF
+ 285 330 69   0   360   arc
+fill
+closepath
+stroke
+newpath
+% x  y   R  angI angF
+ 155 330 69   0   360   arc
+closepath
+fill
+stroke
+```
+
+
 Para mostrar el poema con las distinas tonalidades de gris:
 ```postscript
 newpath
