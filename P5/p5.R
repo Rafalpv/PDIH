@@ -56,5 +56,5 @@ oscillo(nombre_eco)
 nombre_eco_reverse <- revw(nombre_eco,output="Wave")
 listen(nombre_eco_reverse)
 oscillo(nombre_eco_reverse)
-writeWave(nombre_eco_reverse, file.path('alreves'))
+writeWave(nombre_eco_reverse, file.path('alreves.wav'))
 
