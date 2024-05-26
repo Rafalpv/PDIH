@@ -1,6 +1,6 @@
 # Instalar paquetes necesarios
- install.packages('tuneR', dep=TRUE)
- install.packages('seewave', dep=TRUE)
+install.packages('tuneR', dep = TRUE)
+install.packages('seewave', dep = TRUE)
 
 # Cargar librerías
 library(tuneR)
@@ -10,51 +10,83 @@ library(audio)
 # Cambiar directorio de trabajo
 setwd("/home/rafalpv/Escritorio/Practicas/PDIH/P5")
 
-# Leer archivos
+# Leer archivos de audio
 nombre <- readWave('nombre.wav')
 apellido <- readWave('apellido.wav')
 
-# Informacion de las cabeceras
-nombre
-apellido
+# Mostrar información de las cabeceras de los archivos de audio
+print(nombre)
+print(apellido)
 
+# Configurar el reproductor de audio
 setWavPlayer("audacious")
+
+# Reproducir los archivos de audio
 listen(nombre)
 listen(apellido)
 
+# Mostrar oscilogramas de los archivos de audio
 oscillo(nombre)
 oscillo(apellido)
 
-# Calcular y redondear duración de los audios en segundos
-print(paste("Duración de nombre.wav:", round(length(nombre@left) / nombre@samp.rate, 3), "segundos"))
-print(paste("Duración de apellido.wav:", round(length(apellido@left) / apellido@samp.rate, 3), "segundos"))
+# Calcular y redondear la duración de los audios en segundos
+nombre_duracion <- round(length(nombre@left) / nombre@samp.rate, 3)
+apellido_duracion <- round(length(apellido@left) / apellido@samp.rate, 3)
+print(paste("Duración de nombre.wav:", nombre_duracion, "segundos"))
+print(paste("Duración de apellido.wav:", apellido_duracion, "segundos"))
 
-# Unir ambos sonidos
-nombre_completo <- pastew(apellido, nombre,output='Wave')
-nombre_completo
+# Unir ambos sonidos en uno solo
+nombre_completo <- pastew(apellido, nombre, output = 'Wave')
+print(nombre_completo)
 
+# Reproducir y mostrar oscilograma del audio combinado
 listen(nombre_completo)
 oscillo(nombre_completo)
 
-# Pasar filtro de frecuencia
+# Aplicar filtro de frecuencia
 from_frequency <- 100
 to_frequency <- 200
-nombre_completo_filtrado <- bwfilter(wave = nombre_completo,channel = 1,n = 1,from = from_frequency, to=to_frequency,bandpass = TRUE,listen = FALSE,output = 'Wave')
+nombre_completo_filtrado <- bwfilter(
+  wave = nombre_completo, 
+  channel = 1, 
+  n = 1, 
+  from = from_frequency, 
+  to = to_frequency, 
+  bandpass = TRUE, 
+  listen = FALSE, 
+  output = 'Wave'
+)
+
+# Reproducir y mostrar oscilograma del audio filtrado
 listen(nombre_completo_filtrado)
 oscillo(nombre_completo_filtrado)
 
-# Guardar en disco
-writeWave(nombre_completo_filtrado, file.path('mezcla.wav'))
+# Guardar el audio filtrado en un archivo
+writeWave(nombre_completo_filtrado, 'mezcla.wav')
 
-# Cargar mezcla.wav
-listen(nombre)
+# Cargar y reproducir el archivo filtrado
+mezcla <- readWave('mezcla.wav')
+listen(mezcla)
 
-# Aplicar ECO
-nombre_eco <- echo(nombre,f=22050,amp=c(0.7,0.4,0.2),delay=c(1,2,3),output="Wave")
+# Aplicar efecto de eco al audio original
+nombre_eco <- echo(
+  nombre, 
+  f = 22050, 
+  amp = c(0.7, 0.4, 0.2), 
+  delay = c(1, 2, 3), 
+  output = "Wave"
+)
+
+# Reproducir y mostrar oscilograma del audio con eco
 listen(nombre_eco)
 oscillo(nombre_eco)
-nombre_eco_reverse <- revw(nombre_eco,output="Wave")
+
+# Invertir el audio con eco
+nombre_eco_reverse <- revw(nombre_eco, output = "Wave")
+
+# Reproducir y mostrar oscilograma del audio invertido
 listen(nombre_eco_reverse)
 oscillo(nombre_eco_reverse)
-writeWave(nombre_eco_reverse, file.path('alreves.wav'))
 
+# Guardar el audio invertido en un archivo
+writeWave(nombre_eco_reverse, 'alreves.wav')
