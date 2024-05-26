@@ -10,7 +10,7 @@ Definimos el directorio de trabajo:
 ```R
 setwd("/home/rafalpv/Escritorio/Practicas/PDIH/P5")
 ```
-Leemos dos archivos de sonido con extensión .wav:
+Leemos dos archivos de sonido con extensión `.wav`:
 ```R
 nombre <- readWave('nombre.wav')
 apellido <- readWave('apellido.wav')
@@ -22,7 +22,7 @@ print(apellido)
 ```
 ![Informacion nombre+apellido](https://github.com/Rafalpv/PDIH/assets/116666555/ac927e68-d7f7-48b3-ad27-0b60703e116b)
 
-Establecemos el reproductor de sonido, en nuestro caso, utilizamos Audacious en Linux:
+Establecemos el reproductor de sonido, en nuestro caso, utilizamos **Audacious** en Linux:
 ```R
 setWavPlayer("audacious")
 ```
@@ -50,9 +50,10 @@ nombre_completo
 ![Informacion nombre_completo](https://github.com/Rafalpv/PDIH/assets/116666555/88a01751-d76b-4604-ac6b-3fb09952b868)
 
 Dibujamos la forma de la gráfica resultante de haber unido ambos sonidos:
+
 ![Nombre Completo](https://github.com/Rafalpv/PDIH/assets/116666555/c06daf43-a25f-4fe2-b6c0-fa4b554508d1)
 
-Para pasaarle un filtro de frecuencia para eliminar las frecuencias entre 100Hz y 200Hz:
+Para pasarle un filtro de frecuencia para eliminar las frecuencias entre 100Hz y 200Hz:
 ```R
 from_frequency <- 100
 to_frequency <- 200
@@ -60,14 +61,24 @@ nombre_completo_filtrado <- bwfilter(wave = nombre_completo,channel = 1,n = 1,fr
 ```
 ![Nombre completo filtrado](https://github.com/Rafalpv/PDIH/assets/116666555/1ba6d67b-6f26-4078-9930-ad6157a0e2c4)
 
-Para guardar la señal anterior en un fichero WAV, utilizamos `writeWave`:
+Para guardar la señal anterior en un fichero `.wav`, utilizamos la función `writeWave`:
 ```R
 writeWave(nombre_completo_filtrado, file.path('mezcla.wav'))
 ```
 
 Utilizamos el primer archivo que cargamos donde se reproducia el nombre. A este archivo vamos a aplicarle eco:
 ```R
+nombre_eco <- echo(nombre,f=22050,amp=c(0.7,0.4,0.2),delay=c(1,2,3),output="Wave")
 ```
+![Nombre con ECO](https://github.com/Rafalpv/PDIH/assets/116666555/ba4c6842-7197-4b34-a532-5a13e16de750)
 
+Para dar la vuelta a un archivo de audio, utilizamos la función `revw`:
+```r
+nombre_eco_reverse <- revw(nombre_eco,output="Wave")
+```
+![Nombre con ECO al revés](https://github.com/Rafalpv/PDIH/assets/116666555/555e9df6-8875-4a10-9882-cbc49430edbe)
 
-
+Por último, guardamos el nombre con eco al revés en una pista de audio llamada alreves.wav:
+```r
+writeWave(nombre_eco_reverse, file.path('alreves.wav'))
+```
